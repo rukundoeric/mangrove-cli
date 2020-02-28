@@ -1,6 +1,1 @@
-class InitProject{
-    async run(){
-        console.log(arguments[2])
-    }
-}  
-new InitProject().run('hello', 'jjojoojo', 7)
+// mangrove create:model User --attributes firstName:STRING lastName:STRING email:STRING

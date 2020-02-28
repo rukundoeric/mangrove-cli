@@ -8,21 +8,11 @@ import { runCommand } from "./utils";
 import {
   getInitTempleteDirectory,
   copyTemplateFiles,
-  filesDirectory,
-  mkDirByPathSync
 } from "./filesHandler";
-import { defaultDbConfig } from "./default.js";
 import { promisify } from "util";
 const access = promisify(fs.access);
-const getDbConfig = () => {
-  let dbConfig;
-  try {
-    dbConfig = require(`${process.cwd()}/.mangroverc`);
-  } catch (err) {
-    dbConfig = defaultDbConfig;
-  }
-  return dbConfig;
-};
+import { getDbConfig } from "./utils";
+
 export const parseArgumentsIntoOptionsInit = async (data, next) => {
   let { rawArgs } = data;
   const defaultTemplate = "JavaScript";
