@@ -1,7 +1,10 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-loop-func */
 /* eslint-disable no-console */
 import fs from 'fs'
 import path from 'path'
 import { getDbConfig } from './utils'
+import Migrations from './Migrations'
 
 /**
  * @author Rukundo Eric
@@ -9,6 +12,14 @@ import { getDbConfig } from './utils'
  * @description this class performs the whole model oparations
  */
 export default class Model {
+	/**
+   *
+   * @returns {Object} - Response object
+   */
+	constructor() {
+		this.migrations = new Migrations()
+	}
+
 	/**
    *
    * @param {Array} args - Request array
@@ -29,10 +40,9 @@ export default class Model {
 
 	/**
    *
-   * @param {Object} data - Request object
-   * @param {Object} next - Response object
+   * @param {Object} data - Data object
+   * @param {Function} next - Callback Function
    * @returns {Object} - Response object
-   * @description this method takes arguments passed from cli an convert it to Model object
    */
 	parseArgsToProperties(data, next) {
 		const { args } = data
@@ -63,10 +73,9 @@ export default class Model {
 
 	/**
    *
-   * @param {Object} data - Request object
-   * @param {Object} next - Response object
+   * @param {Object} data - Data object
+   * @param {Object} next - Callback Function
    * @returns {Object} - Response object
-   * @description this method takes Model object and convert it to javascript code
    */
 	convertToStringCode(data, next) {
 		const { model } = data
@@ -97,10 +106,9 @@ export default class Model {
 
 	/**
    *
-   * @param {Object} data - Request object
-   * @param {Object} next - Response object
-   * @returns {Object} - Response object
-   * @description this method takes the codes and write them in file
+   * @param {Object} data - Data object
+   * @param {Object} next - Callback Function
+   * @returns {Object} - Responbject
    */
 	createFile(data) {
 		data.dbConfig = getDbConfig()
@@ -120,12 +128,12 @@ export default class Model {
    */
 	async run(...funcs) {
 		let { data } = this
-		funcs.forEach(async (func) => {
-			await func(data, (res, err) => {
+		for (let i = 0; i < funcs.length; i += 1) {
+			await funcs[i](data, (res, err) => {
 				if (err) throw err
 				data = res
 			})
-		})
+		}
 		this.data = data
 	}
 }

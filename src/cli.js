@@ -1,45 +1,54 @@
+/* eslint-disable no-fallthrough */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-tabs */
 /* eslint-disable import/named */
-import InitProject, {
-	parseArgumentsIntoOptionsInit,
-	prompForMissingOptionsInit,
-	initializeProjectDirectory,
-	executeTasks,
-} from './mangrove/initProject'
+import Init from './mangrove/Init'
 import Model from './mangrove/Models'
-
+import Migrations from './mangrove/Migrations'
 
 export const cli = async (args) => {
-	const initProject = new InitProject(args)
 	switch (args[2]) {
 	case '--init': {
-		initProject
+		const init = new Init(args)
+		init
 			.setArgs(args)
 			.run(
-				parseArgumentsIntoOptionsInit,
-				prompForMissingOptionsInit,
-				initializeProjectDirectory,
-				executeTasks,
+				init.parseArgsIntoOptions,
+				init.prompForMissingOptions,
+				init.initializeProjectDirectory,
+				init.executeTasks
 			)
-			.then(() => Promise.resolve())
-			.catch(err => Promise.reject(err))
 
 		break
 	}
 	case 'create:model': {
 		const model = new Model()
-		model.setArgs(args)
+		model
+			.setArgs(args)
 			.run(
 				model.parseArgsToProperties,
 				model.convertToStringCode,
+				model.migrations.convertToStringCode,
 				model.createFile,
+				model.migrations.createFile
+			)
+		break
+	}
+	case 'db:migrate': {
+		const migrations = new Migrations()
+		migrations
+			.setArgs(args)
+			.run(
+				migrations.testDbConnection,
+				migrations.migrate,
+				migrations.finish
 			)
 		break
 	}
 	default: {
+		// eslint-disable-next-line no-console
 		console.log(
-			`Mangrove: ${args[2]}  is not mangrove command.  See 'mangrove --help'`,
+			`Mangrove: ${args[2]}  is not mangrove command.  See 'mangrove --help'`
 		)
 		break
 	}
