@@ -8,14 +8,9 @@ import inquirer from 'inquirer'
 import fs from 'fs'
 import { promisify } from 'util'
 import { runCommand, getDbConfig } from './utils'
-import {
-	getInitTempleteDirectory,
-	copyTemplateFiles,
-} from './filesHandler'
-
+import { getInitTempleteDirectory, copyTemplateFiles } from './filesHandler'
 
 const access = promisify(fs.access)
-
 
 /**
  * @author Rukundo Eric
@@ -146,7 +141,7 @@ export default class Init {
 			})
 			options.template.initTemplete = initTemplete
 			data.options = options
-      await access(initTemplete, fs.constants.R_OK)
+			await access(initTemplete, fs.constants.R_OK)
 			next(data)
 		} catch (err) {
 			next(data, err)
@@ -167,7 +162,6 @@ export default class Init {
 					dbConfig
 				}
 			} = a
-
 			Object.keys(dbConfig).forEach((config) => {
 				mkdirp(dbConfig[config])
 					.then(() => {
@@ -175,11 +169,14 @@ export default class Init {
 							path.join(initTemplete, 'mangrove', config),
 							path.join(dbConfig[config], '')
 						)
+							.then(() => {})
+							.catch(err => Promise.reject(err))
 					})
 					.catch(err => Promise.reject(err))
 			})
 			access(path.join(process.cwd(), '.mangroverc'), fs.constants.R_OK)
-				.then(() => {}).catch(() => {
+				.then(() => {})
+				.catch(() => {
 					fs.copyFile(
 						path.join(initTemplete, '.mangroverc'),
 						path.join(process.cwd(), '.mangroverc'),
