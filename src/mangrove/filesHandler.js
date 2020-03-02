@@ -35,13 +35,12 @@ export const filesDirectory = (pathDir) => {
 	return output
 }
 
-export const getInitTempleteDirectory = data => {
-  let { options } = data;
-  const currentFileUrl = import.meta.url;
-  let templateDir = path.resolve(
-    correctPath(new URL(currentFileUrl).pathname),
-    data.initTemplete,
-    options.template.choice.toLowerCase()
-  );
-  return templateDir;
-};
+export const getInitTempleteDirectory = (data) => {
+	const { options } = data
+	const templateDir = path.resolve(
+		correctPath(__filename),
+		data.initTemplete,
+		options.template.choice.toLowerCase()
+	)
+	return templateDir
+}
