@@ -122,7 +122,7 @@ export default class Migrations {
 		const tasks = []
 		fs.readdirSync(path.join(migrationsDir, ''))
 			.filter(
-				file => file.slice(-3) === '.js'
+				file => (file.slice(-3) === '.js' && file.slice(-3) !== '.md')
 			)
 			.forEach((file) => {
 				const task = {}

@@ -38,7 +38,7 @@ export const filesDirectory = (pathDir) => {
 export const getInitTempleteDirectory = (data) => {
 	const { options } = data
 	const templateDir = path.resolve(
-		correctPath(__filename),
+		__filename,
 		data.initTemplete,
 		options.template.choice.toLowerCase()
 	)
