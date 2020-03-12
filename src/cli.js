@@ -5,6 +5,7 @@
 import Init from './mangrove/Init'
 import Model from './mangrove/Models'
 import Migrations from './mangrove/Migrations'
+import Seeders from './mangrove/Seeder';
 
 export const cli = async (args) => {
 	switch (args[2]) {
@@ -44,6 +45,18 @@ export const cli = async (args) => {
 				migrations.finish
 			)
 		break
+	}
+
+	case 'db:seed' : {
+		const seeders = new Seeders();
+		seeders
+			.setArgs(args)
+			.run(
+				seeders.parseArgsToProperties,
+				seeders.convertToStringCode,
+				seeders.createFile
+			)
+			break
 	}
 	default: {
 		// eslint-disable-next-line no-console
