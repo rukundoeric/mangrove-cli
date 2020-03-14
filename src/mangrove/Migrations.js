@@ -35,35 +35,12 @@ export default class Migrations {
    */
 	convertToStringCode(data, next) {
 		const { model } = data
-		const generateRow = (name, value) => {
-			const rows = []
-			Object.keys(value).forEach((item) => {
-				rows.push(
-					`${item}:  ${item === 'type' ? 'mangrove.DataTypes.' : ''}${
-						value[item]
-					}`
-				)
-			})
-			return `
-        ${name}: {
-          ${rows}
-        }
-      `
-		}
-		const generateAttributes = (object) => {
-			const attributes = []
-			Object.keys(object).forEach((item) => {
-				attributes.push(`\t\t${generateRow(item, { type: object[item] })}`)
-			})
-			return attributes
-		}
 		try {
 			const code = `
-  module.exports = {
-    up: mangrove =>   
-      mangrove.createTable("${model.name}",
-       {${generateAttributes(model.attributes)}}),
-    down: mangrove => mangrove.dropTable("${model.name}")
+module.exports = {
+	up: mangrove =>   
+		mangrove.schema.createTable("${model.name}", ${JSON.stringify(model.columns, null, 2)}),
+	down: mangrove => mangrove.schema.dropTable("${model.name}")
 };
     `
 			model.code = { ...model.code, migration: code }
