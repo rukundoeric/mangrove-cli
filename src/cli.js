@@ -22,12 +22,12 @@ export const cli = async (args) => {
 
 		break
 	}
-	case 'create:model': {
+	case 'create': {
 		const model = new Model()
 		model
 			.setArgs(args)
 			.run(
-				model.parseArgsToProperties,
+				model.generateObjectModel,
 				model.convertToStringCode,
 				model.migrations.convertToStringCode,
 				model.createFile,
