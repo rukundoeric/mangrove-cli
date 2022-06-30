@@ -33,7 +33,7 @@
     "ncp": "^2.0.0",
     "path": "^0.12.7",
     "pkg-install": "^1.0.0",
-    "shelljs": "^0.8.3",
+    "shelljs": "^0.8.5",
     "util": "^0.12.1"
   },
   "devDependencies": {
