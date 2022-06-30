@@ -1,0 +1,9 @@
+const path = require('path');
+
+// default paths
+module.exports = {
+  'connection': path.resolve('./mangrove/connection'),
+  'models': path.resolve('./mangrove/models'),
+  'seeders': path.resolve('./mangrove/seeders'),
+  'migrations': path.resolve('./mangrove/migrations')
+}

@@ -1,0 +1,1 @@
+// mangrove create:model User --attributes firstName:STRING lastName:STRING email:STRING
